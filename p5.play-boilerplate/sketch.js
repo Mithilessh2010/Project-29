@@ -4,7 +4,7 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 var ground, groundb1;
-var hex, chain;
+var hex, chain, sling;
 var b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16;
 
 function setup() {
@@ -13,7 +13,8 @@ function setup() {
   world = engine.world;
 
   hex = new Hex(40, 100, 50, 50);
-  ground = new Ground(390, 300, 250, 10)
+  groundb1 = new Ground(390, 300, 250, 10)
+  ground = new Ground(400,400,900,50)
   //level 1
   b1 = new Box(300, 275, 30, 40, "lightblue");
   b2 = new Box(330, 275, 30, 40, "lightblue");
@@ -37,12 +38,16 @@ function setup() {
 
   //level 4
   b16 = new Box(390, 155, 30, 40, "gray");
-  sling = new Chain(this.hex.body, { x: 40, y: 100 });
+  sling = new Chain(this.hex.body, { x: 100, y: 100 });
 
 }
 
 function draw() {
   background(56, 44, 44);
+  Engine.update(engine);
+  strokeWeight(4);
+
+  groundb1.display();
   ground.display();
   b1.display();
   b2.display();
@@ -64,11 +69,19 @@ function draw() {
   sling.display();
   drawSprites();
 }
-function mouseDragged() {
-  Matter.Body.setPosition(this.hex.body, { x: mouseX, y: mouseY });
+function mouseDragged(){
+  Matter.Body.setPosition(this.hex.body, {x: mouseX , y: mouseY});
 }
 
 
-function mouseReleased() {
+function mouseReleased(){
   sling.fly();
+}
+
+function keyPressed(){
+	if(keyCode === 32)
+	{
+		Matter.Body.setPosition(hex.body,{x:235, y:420})
+		sling.attach(hex.body);
+	}
 }
